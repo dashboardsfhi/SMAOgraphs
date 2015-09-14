@@ -16,7 +16,7 @@ SMAOColourPalette <- c(
 SMAOLabelsTotal <- "Totalt"
 SMAOLabelsNorway <- c("Norge","Norsk","Norske","Norskfødte")
 
-SMAOFormatGGPlot <- function (q, sizeMultiplier = 3, legendKey = 3, xAngle = 0, stripes = TRUE, legendPos="bottom", ncol=3, legendBorder=FALSE) 
+SMAOFormatGGPlot <- function (q, sizeMultiplier = 3, legendKey = 3, xAngle = 0, stripes = TRUE, legendPos="bottom", ncol=3, legendBorder=FALSE, reverse=FALSE) 
 {
   q <- q + theme(axis.ticks = element_line(colour = "black"))
   q <- q + theme(panel.background = element_rect(colour = "white", 
@@ -61,8 +61,8 @@ SMAOFormatGGPlot <- function (q, sizeMultiplier = 3, legendKey = 3, xAngle = 0, 
   q <- q + theme(plot.title = element_text(size = 14 * sizeMultiplier, 
                                            hjust = 0.5, vjust = 1))
   q <- q + theme(legend.position=legendPos)
-  q <- q + guides(colour = guide_legend(ncol = ncol, byrow=TRUE, title.position="top"))
-  q <- q + guides(fill = guide_legend(ncol = ncol, byrow=TRUE, title.position="top"))
+  q <- q + guides(colour = guide_legend(ncol = ncol, byrow=TRUE, title.position="top", reverse=reverse))
+  q <- q + guides(fill = guide_legend(ncol = ncol, byrow=TRUE, title.position="top", reverse=reverse))
   
   return(q)
 }
@@ -117,6 +117,7 @@ SMAOPriorityLevels <- function(useLabels){
 SMAOColourSpecify <- function(useLabels, total=NULL, total2=NULL, norway=NULL, norway2=NULL, type="colour", lab=""){
   if(!is.factor(useLabels)) stop("THIS IS NOT A FACTOR, REORGANISING WILL DISPLAY WRONG COLOURS")
   
+  origData <- unique(useLabels)
   useLabels <- levels(useLabels)
   useValues <- SMAOColourPalette
   usedLabels <- rep(FALSE,length(useLabels))
@@ -149,6 +150,8 @@ SMAOColourSpecify <- function(useLabels, total=NULL, total2=NULL, norway=NULL, n
   }
   
   labels=useLabels
+  values <- values[labels %in% origData]
+  labels <- labels[labels %in% origData]
   
   palette <- list("values"=values,"labels"=labels)
   
