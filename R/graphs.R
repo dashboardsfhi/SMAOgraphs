@@ -76,7 +76,7 @@ SMAOpng <- function (file = "Figure.png", w = 1, h = 1, landscape = TRUE)
     height <- 2480/2
   }
   width <- width * w
-  height <- height * w
+  height <- height * h
   
   png(file, width = width, height = height)
 }
